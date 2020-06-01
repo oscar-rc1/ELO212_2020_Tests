@@ -1,5 +1,6 @@
 vivado/
-dut/
+
+/*/dut/*
 !dut/.keep
 
 *.kate-swp
