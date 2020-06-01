@@ -1,0 +1,7 @@
+vivado/
+dut/
+!dut/.keep
+
+*.kate-swp
+*.~lock.*
+*.autosave
