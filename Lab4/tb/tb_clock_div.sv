@@ -5,7 +5,7 @@ module tb_clock_div();
 	bit rst = 1'b1;
 
 	always #5 clk = ~clk;
-	always_ff @(posedge clk) rst <= 1'b0;
+	always #10 @(posedge clk) rst <= 1'b0;
 
 	//
 
@@ -17,7 +17,7 @@ module tb_clock_div();
 		$error("clk_50M is not running");
 	end
 
-	assert property (@(posedge clk) disable iff (rst) ($rose(clk_50M) |-> ##1 ~clk_50M) and ($fell(clk_50M) |-> ##1 clk_50M)) else begin
+	assert property ( @(posedge clk) disable iff (rst) $rose(clk_50M) |=> $fell(clk_50M) ##1 $rose(clk_50M) ) else begin
 		pass = 1'b0;
 		$error("clk_50M doesn't match the expected frequency");
 	end
@@ -27,7 +27,7 @@ module tb_clock_div();
 		$error("clk_30M is not running");
 	end
 
-	assert property (@(posedge clk) disable iff (rst) ($rose(clk_30M) |-> ##2 ~clk_30M) and ($fell(clk_30M) |-> ##2 clk_30M)) else begin
+	assert property ( @(posedge clk) disable iff (rst) $rose(clk_30M) |=> $stable(clk_30M) ##1 $fell(clk_30M) ##1 $stable(clk_30M) ##1 $rose(clk_30M) ) else begin
 		pass = 1'b0;
 		$error("clk_30M doesn't match the expected frequency");
 	end
@@ -37,7 +37,7 @@ module tb_clock_div();
 		$error("clk_10M is not running");
 	end
 
-	assert property (@(posedge clk) disable iff (rst) ($rose(clk_10M) |-> ##5 ~clk_10M) and ($fell(clk_10M) |-> ##5 clk_10M)) else begin
+	assert property ( @(posedge clk) disable iff (rst) $rose(clk_10M) |=> $stable(clk_10M) [*4] ##1 $fell(clk_10M) ##1 $stable(clk_10M) [*4] ##1 $rose(clk_10M) ) else begin
 		pass = 1'b0;
 		$error("clk_10M doesn't match the expected frequency");
 	end
@@ -47,7 +47,7 @@ module tb_clock_div();
 		$error("clk_1M is not running");
 	end
 
-	assert property (@(posedge clk) disable iff (rst) ($rose(clk_1M) |-> ##50 ~clk_1M) and ($fell(clk_1M) |-> ##50 clk_1M)) else begin
+	assert property ( @(posedge clk) disable iff (rst) $rose(clk_1M) |=> $stable(clk_1M) [*49] ##1 $fell(clk_1M) ##1 $stable(clk_1M) [*49] ##1 $rose(clk_1M) ) else begin
 		pass = 1'b0;
 		$error("clk_1M doesn't match the expected frequency");
 	end
