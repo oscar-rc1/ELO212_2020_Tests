@@ -39,20 +39,40 @@ module tb_display_mux();
 
 					case(out_segs)
 						7'b0000001: out_digits[i] = 4'h0;
+
 						7'b1001111: out_digits[i] = 4'h1;
+
 						7'b0010010: out_digits[i] = 4'h2;
+
 						7'b0000110: out_digits[i] = 4'h3;
+
 						7'b1001100: out_digits[i] = 4'h4;
+
 						7'b0100100: out_digits[i] = 4'h5;
+
 						7'b0100000: out_digits[i] = 4'h6;
+
+						7'b0001111: out_digits[i] = 4'h7;
+						7'b0001101: out_digits[i] = 4'h7;
 						7'b0001110: out_digits[i] = 4'h7;
+
 						7'b0000000: out_digits[i] = 4'h8;
+
+						7'b0001100: out_digits[i] = 4'h9;
 						7'b0000100: out_digits[i] = 4'h9;
+
 						7'b0001000: out_digits[i] = 4'hA;
+
 						7'b1100000: out_digits[i] = 4'hB;
+
 						7'b0110001: out_digits[i] = 4'hC;
+						7'b1110010: out_digits[i] = 4'hC;
+
 						7'b1000010: out_digits[i] = 4'hD;
+
 						7'b0110000: out_digits[i] = 4'hE;
+						7'b0010000: out_digits[i] = 4'hE;
+
 						7'b0111000: out_digits[i] = 4'hF;
 					endcase
 				end
