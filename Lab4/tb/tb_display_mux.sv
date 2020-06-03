@@ -62,6 +62,7 @@ module tb_display_mux();
 						7'b0000100: out_digits[i] = 4'h9;
 
 						7'b0001000: out_digits[i] = 4'hA;
+						7'b0000010: out_digits[i] = 4'hA;
 
 						7'b1100000: out_digits[i] = 4'hB;
 
