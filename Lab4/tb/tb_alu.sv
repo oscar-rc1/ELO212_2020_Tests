@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 
 module tb_alu();
-	bit clk = 1'b0;
+	bit clk = 1'b1;
 
 	always #1 clk = ~clk;
 
@@ -13,13 +13,13 @@ module tb_alu();
 	bit error = 1'b0;
 	bit pass = 1'b1;
 
+	always_comb error = ({Result, Status} !== {ResultRef, StatusRef});
+
 	initial begin
 		{A, B, OpCode} = '0;
 
 		while(1) begin
 			@(posedge clk);
-
-			error = ({Result, Status} !== {ResultRef, StatusRef});
 
 			if(error) begin
 				$error($sformatf("A: %02X | B: %02X | Op: %d | Output is %02X (status %04b), but expected %02X (status %04b)", A, B, OpCode, Result, Status, ResultRef, StatusRef));
