@@ -13,7 +13,7 @@ module tb_alu();
 	bit error = 1'b0;
 	bit pass = 1'b1;
 
-	always_comb error = ({Result, Status} !== {ResultRef, StatusRef});
+	always_comb error = (OpCode == '0 ? ({Result, Status} !== {ResultRef, StatusRef}) : ({Result, Status[2]} !== {ResultRef, StatusRef[2]}));
 
 	initial begin
 		{A, B, OpCode} = '0;
