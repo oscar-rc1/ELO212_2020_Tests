@@ -1,6 +1,6 @@
 cd [file dirname [info script]]
 
-create_project -force Sesion7_ELO212_Test2 -part xc7a100tcsg324-1 vivado/test1
+create_project -force Sesion7_ELO212_Test2 -part xc7a100tcsg324-1 vivado/test2
 
 read_verilog -sv tb/tb_act2.sv
 read_verilog -sv ../Modules/calc_fsm.sv
