@@ -1,7 +1,7 @@
 vivado/
 
 /*/dut/*
-!dut/.keep
+!.keep
 
 *.kate-swp
 *.~lock.*
