@@ -3,6 +3,7 @@
 module tb_act2();
 	localparam C_DEBOUNCER_DELAY = 10;
 	localparam C_NUM_TESTS = 5000;
+	localparam C_BUTTON_EDGE = 0; // 0 -> pressed, 1 -> released
 
 	bit pass = 1'b1;
 
@@ -92,7 +93,7 @@ module tb_act2();
 
 	assert property (
 		@(posedge clk) disable iff (~rst_n | ~pass)
-			~$stable(ref_display) & ~in_button |-> ##4 (ref_display == out_display) [*1:$]
+			~$stable(ref_display) |-> ##4 (ref_display == out_display) [*1:$]
 	)
 	else begin
 		pass = 0;
@@ -101,7 +102,7 @@ module tb_act2();
 
 	assert property (
 		@(posedge clk) disable iff (~rst_n | ~pass)
-			~$stable(ref_flags) & ~in_button |-> ##4 (ref_flags == out_flags) [*1:$]
+			~$stable(ref_flags) |-> ##4 (ref_flags == out_flags) [*1:$]
 	)
 	else begin
 		pass = 0;
@@ -130,7 +131,8 @@ module tb_act2();
 
 	calc_fsm
 	#(
-		.C_DEBOUNCER_DELAY(C_DEBOUNCER_DELAY)
+		.C_DEBOUNCER_DELAY(C_DEBOUNCER_DELAY),
+		.C_BUTTON_EDGE(C_BUTTON_EDGE)
 	)
 	REF
 	(

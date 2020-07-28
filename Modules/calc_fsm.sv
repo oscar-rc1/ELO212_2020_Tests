@@ -1,6 +1,7 @@
 module calc_fsm
 #(
-	parameter C_DEBOUNCER_DELAY = 10
+	parameter C_DEBOUNCER_DELAY = 10,
+	parameter C_BUTTON_EDGE = 0
 )
 (
 	input logic clk,
@@ -74,6 +75,17 @@ module calc_fsm
 
 	// Module instances
 
+	logic enter_pressed, enter_released;
+	logic undo_pressed, undo_released;
+
+	if(!C_BUTTON_EDGE) begin
+		assign enter_db = enter_pressed;
+		assign undo_db = undo_pressed;
+	end else begin
+		assign enter_db = enter_released;
+		assign undo_db = undo_released;
+	end
+
 	ALU_ref
 	#(
 		.C_WIDTH(16)
@@ -97,7 +109,8 @@ module calc_fsm
 		.clk(clk),
 		.rst(~rst_n),
 		.PB(enter),
-		.PB_pressed_pulse(enter_db)
+		.PB_pressed_pulse(enter_pressed),
+		.PB_released_pulse(enter_released)
 	);
 
 	PB_Debouncer_FSM
@@ -109,6 +122,7 @@ module calc_fsm
 		.clk(clk),
 		.rst(~rst_n),
 		.PB(undo),
-		.PB_pressed_pulse(undo_db)
+		.PB_pressed_pulse(undo_pressed),
+		.PB_released_pulse(undo_released)
 	);
 endmodule

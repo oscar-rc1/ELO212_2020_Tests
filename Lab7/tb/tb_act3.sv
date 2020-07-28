@@ -3,6 +3,8 @@
 module tb_act3();
 	localparam C_DEBOUNCER_DELAY = 10;
 	localparam C_NUM_TESTS = 1000;
+	localparam C_BUTTON_EDGE = 0;       // 0 -> pressed,           1 -> released
+	localparam C_SWAP_SEGMENTS = 1;     // 0 -> {CA, CB, ..., CG}, 1 -> {CG, ..., CB, CA}
 
 	bit pass = 1'b1;
 
@@ -90,14 +92,14 @@ module tb_act3();
 
 	logic [3:0] out_flags, ref_flags;
 	logic [6:0] out_segments;
-	logic [7:0] out_anodes;
+	logic [4:0] out_anodes;
 	logic [15:0] ref_display;
 	logic [31:0] out_display;
 	int out_state;
 
 	assert property (
 		@(posedge clk) disable iff (~rst_n | ~pass)
-			~$stable(ref_display) & ~in_button |-> ##120 (ref_display == out_display[15:0]) [*1:$]
+			~$stable(ref_display) |-> ##200 (ref_display == out_display[15:0]) [*1:$]
 	)
 	else begin
 		pass = 0;
@@ -106,7 +108,7 @@ module tb_act3();
 
 	assert property (
 		@(posedge clk) disable iff (~rst_n | ~pass)
-			~$stable(ref_flags) & ~in_button |-> ##120 (ref_flags == out_flags) [*1:$]
+			~$stable(ref_flags) |-> ##200 (ref_flags == out_flags) [*1:$]
 	)
 	else begin
 		pass = 0;
@@ -135,7 +137,7 @@ module tb_act3();
 
 	sseg_decoder
 	#(
-		.C_SWAP_SEGMENTS(1)
+		.C_SWAP_SEGMENTS(C_SWAP_SEGMENTS)
 	)
 	decoder
 	(
@@ -144,7 +146,7 @@ module tb_act3();
 
 		.dec(in_format),
 		.segments(out_segments),
-		.anodes(out_anodes),
+		.anodes({'1, out_anodes}),
 
 		.displayed_num(out_display)
 	);
@@ -153,7 +155,8 @@ module tb_act3();
 
 	calc_fsm
 	#(
-		.C_DEBOUNCER_DELAY(C_DEBOUNCER_DELAY)
+		.C_DEBOUNCER_DELAY(C_DEBOUNCER_DELAY),
+		.C_BUTTON_EDGE(C_BUTTON_EDGE)
 	)
 	REF
 	(
