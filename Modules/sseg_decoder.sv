@@ -1,4 +1,4 @@
-module sseg_decoder
+module sseg_decoder #(parameter C_SWAP_SEGMENTS = 0)
 (
 	input logic clk,
 	input logic rst_n,
@@ -9,7 +9,14 @@ module sseg_decoder
 
 	output logic [31:0] displayed_num
 );
+	logic [6:0] segments_swapped;
 	logic [3:0] digits[0:7];
+
+	if(!C_SWAP_SEGMENTS) begin
+		assign segments_swapped = segments;
+	end else begin
+		assign segments_swapped = {<<{segments}};
+	end
 
 	always_ff @(posedge clk) begin
 		if(~rst_n) begin
@@ -34,7 +41,7 @@ module sseg_decoder
 			if(~rst_n) begin
 				digits[i] <= 4'h0;
 			end else if(~anodes[i]) begin
-				case(segments)
+				case(segments_swapped)
 					7'b0000001: digits[i] <= 4'h0;
 
 					7'b1001111: digits[i] <= 4'h1;

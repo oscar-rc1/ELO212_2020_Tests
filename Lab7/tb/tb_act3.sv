@@ -133,7 +133,11 @@ module tb_act3();
 		.CurrentState(out_state)
 	);
 
-	sseg_decoder decoder
+	sseg_decoder
+	#(
+		.C_SWAP_SEGMENTS(1)
+	)
+	decoder
 	(
 		.clk(clk),
 		.rst_n(rst_n),
