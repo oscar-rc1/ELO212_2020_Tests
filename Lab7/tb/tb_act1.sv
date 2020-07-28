@@ -1,8 +1,10 @@
 `timescale 1ns / 1ps
 
 module tb_act1();
-	localparam C_DEBOUNCER_DELAY = 10;
 	localparam C_NUM_TESTS = 5000;
+
+	localparam C_DEBOUNCER_DELAY = 10;
+	localparam C_MASK_OPCODE_BITS = 0;
 	localparam C_BUTTON_EDGE = 0; // 0 -> pressed, 1 -> released
 
 	bit pass = 1'b1;
@@ -118,6 +120,7 @@ module tb_act1();
 	calc_fsm
 	#(
 		.C_DEBOUNCER_DELAY(C_DEBOUNCER_DELAY),
+		.C_MASK_OPCODE_BITS(C_MASK_OPCODE_BITS),
 		.C_BUTTON_EDGE(C_BUTTON_EDGE)
 	)
 	REF

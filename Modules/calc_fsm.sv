@@ -1,6 +1,7 @@
 module calc_fsm
 #(
 	parameter C_DEBOUNCER_DELAY = 10,
+	parameter C_MASK_OPCODE_BITS = 0,
 	parameter C_BUTTON_EDGE = 0
 )
 (
@@ -66,11 +67,23 @@ module calc_fsm
 	end
 
 	always_comb begin
-		if(state == ST_SHOW_RESULT) begin
-			display = opRes;
-		end else begin
-			display = value;
-		end
+		case(state)
+			ST_SHOW_RESULT: begin
+				display = opRes;
+			end
+
+			ST_INPUT_OPCODE: begin
+				if(!C_MASK_OPCODE_BITS) begin
+					display = value;
+				end else begin
+					display = {'0, value[1:0]};
+				end
+			end
+
+			default: begin
+				display = value;
+			end
+		endcase
 	end
 
 	// Module instances
