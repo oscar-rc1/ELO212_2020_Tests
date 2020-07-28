@@ -33,10 +33,6 @@ module tb_act3();
 
 		for(int i = 0; i < length; ++i) begin
 			#2;
-
-			if(i > C_DEBOUNCER_DELAY + 2) begin
-				in_number = $urandom;
-			end
 		end
 
 		in_button = 1'b0;
