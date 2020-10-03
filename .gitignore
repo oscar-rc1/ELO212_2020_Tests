@@ -1,8 +1,12 @@
+__pycache__
+obj_dir
 vivado/
 
 /*/dut/*
+!/Lab1/dut/*
 !.keep
 
 *.kate-swp
 *.~lock.*
 *.autosave
+.directory
